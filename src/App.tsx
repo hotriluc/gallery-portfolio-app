@@ -1,3 +1,4 @@
+import Gallery from './components/gallery/Gallery';
 import Wrapper from './components/layout/Wrapper';
 import { useLenis } from './hooks/useLenis';
 
@@ -6,7 +7,18 @@ function App() {
 
   return (
     <Wrapper>
-      <div>gallery</div>
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          color: 'red',
+          zIndex: 40,
+        }}
+      >
+        CENTER
+      </div>
+      <Gallery />
     </Wrapper>
   );
 }
