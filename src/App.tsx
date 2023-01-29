@@ -6,7 +6,7 @@ function App() {
 
   return (
     <Wrapper>
-      <div>something</div>
+      <div>gallery</div>
     </Wrapper>
   );
 }
