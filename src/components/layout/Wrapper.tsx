@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        background: ${(props: any) => props.theme.background};
+        background:  ${(props) => props.theme.background} ;
         color:  ${(props: any) => props.theme.color};
         overscroll-behavior: none;
         overflow-x: hidden;
@@ -40,7 +40,7 @@ const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   };
 
   return (
-    <ThemeProvider theme={lightTheme || darkTheme}>
+    <ThemeProvider theme={darkTheme || lightTheme}>
       <GlobalStyle />
       <main>{children}</main>
     </ThemeProvider>

@@ -8,20 +8,16 @@ const list: Array<{
   imgUrl: string;
   title: string;
 }> = [
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  { imgUrl: '/image1.jpg', title: 'something here' },
-  //   { imgUrl: '/image1.jpg', title: 'something here' },
-  //   { imgUrl: '/image1.jpg', title: 'something here' },
-  //   { imgUrl: '/image1.jpg', title: 'something here' },
+  { imgUrl: '/image1.jpg', title: 'Lorem Ipsum' },
+  { imgUrl: '/image1.jpg', title: 'Lorem Ipsum' },
+
+  { imgUrl: '/image1.jpg', title: 'Lorem Ipsum' },
+  { imgUrl: '/image1.jpg', title: 'Lorem Ipsum' },
+  { imgUrl: '/image1.jpg', title: 'Lorem Ipsum' },
 ];
 
 const Gallery = ({
-  gap = 10,
+  gap = 15,
   itemWidth = 300,
   itemHeight = 400,
 }: {
@@ -36,13 +32,9 @@ const Gallery = ({
       gsap.registerPlugin(ScrollTrigger);
       const cards: Array<HTMLDivElement> = gsap.utils.toArray('.card');
 
-      // Card scrolling animation
-      console.log(cards[0].offsetWidth);
-
-      // TODO: xPercent calculation depends on gap and padding etc.
       const scrollTween = gsap.to(cards, {
         xPercent:
-          -(100 + cards[0].offsetWidth / 10) * cards.length -
+          -(115 + cards[0].offsetWidth / 10) * cards.length -
           gap * cards.length,
 
         ease: 'none', // <-- IMPORTANT!
@@ -56,29 +48,17 @@ const Gallery = ({
 
       // Scaling up/down on scroll
       for (let i = 0; i < list.length; i++) {
-        if (i > 0) {
-          gsap.to(`.card-${i}`, {
-            scale: 1.5,
-            ease: 'power3.inOut',
-            scrollTrigger: {
-              horizontal: true,
-              containerAnimation: scrollTween,
-              scrub: true,
-              trigger: `.card-${i}`,
-              start: '-10% 50%',
-              end: '40% 50%',
-            },
-          });
-        }
-        gsap.from(`.card-${i}`, {
-          scale: 1.5,
+        gsap.to(`.card-${i}-title`, {
+          x: -20,
+          opacity: 0,
           scrollTrigger: {
             horizontal: true,
             containerAnimation: scrollTween,
             scrub: true,
+            markers: true,
             trigger: `.card-${i}`,
-            start: '60% 50%',
-            end: '120% 50%',
+            start: '150% 50%',
+            end: '+=400% 50%',
           },
         });
       }
