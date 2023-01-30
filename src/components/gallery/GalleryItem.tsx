@@ -4,13 +4,15 @@ interface GalleryItemProps {
   index: number;
   imgUrl: string;
   title: string;
+  width: number;
+  height: number;
 }
 
 const GalleryItem = (props: GalleryItemProps) => {
   return (
     <div
       className={`card card-${props.index}`}
-      style={{ height: 400, width: 300 }}
+      style={{ height: props.height, width: props.width }}
     >
       <img
         src="/image1.jpg"

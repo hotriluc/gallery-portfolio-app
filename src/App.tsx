@@ -7,17 +7,6 @@ function App() {
 
   return (
     <Wrapper>
-      <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          color: 'red',
-          zIndex: 40,
-        }}
-      >
-        CENTER
-      </div>
       <Gallery />
     </Wrapper>
   );

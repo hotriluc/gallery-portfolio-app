@@ -13,27 +13,44 @@ const list: Array<{
   { imgUrl: '/image1.jpg', title: 'something here' },
   { imgUrl: '/image1.jpg', title: 'something here' },
   { imgUrl: '/image1.jpg', title: 'something here' },
+  { imgUrl: '/image1.jpg', title: 'something here' },
+  { imgUrl: '/image1.jpg', title: 'something here' },
+  //   { imgUrl: '/image1.jpg', title: 'something here' },
+  //   { imgUrl: '/image1.jpg', title: 'something here' },
+  //   { imgUrl: '/image1.jpg', title: 'something here' },
 ];
 
-const Gallery = () => {
+const Gallery = ({
+  gap = 10,
+  itemWidth = 300,
+  itemHeight = 400,
+}: {
+  gap?: number;
+  itemWidth?: number;
+  itemHeight?: number;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.registerPlugin(ScrollTrigger);
-      const cards = gsap.utils.toArray('.card');
+      const cards: Array<HTMLDivElement> = gsap.utils.toArray('.card');
 
       // Card scrolling animation
+      console.log(cards[0].offsetWidth);
 
       // TODO: xPercent calculation depends on gap and padding etc.
       const scrollTween = gsap.to(cards, {
-        xPercent: -100 * cards.length,
+        xPercent:
+          -(100 + cards[0].offsetWidth / 10) * cards.length -
+          gap * cards.length,
+
         ease: 'none', // <-- IMPORTANT!
         scrollTrigger: {
           trigger: ref.current,
           pin: true,
           scrub: 1,
-          end: '+=3000',
+          end: () => '+=' + ref.current?.offsetWidth,
         },
       });
 
@@ -41,28 +58,27 @@ const Gallery = () => {
       for (let i = 0; i < list.length; i++) {
         if (i > 0) {
           gsap.to(`.card-${i}`, {
-            scale: 1.2,
+            scale: 1.5,
+            ease: 'power3.inOut',
             scrollTrigger: {
               horizontal: true,
               containerAnimation: scrollTween,
               scrub: true,
-              markers: true,
               trigger: `.card-${i}`,
-              start: 'left 50%',
+              start: '-10% 50%',
               end: '40% 50%',
             },
           });
         }
         gsap.from(`.card-${i}`, {
-          scale: 1.2,
+          scale: 1.5,
           scrollTrigger: {
             horizontal: true,
             containerAnimation: scrollTween,
             scrub: true,
-            // markers: true,
             trigger: `.card-${i}`,
             start: '60% 50%',
-            end: '110% 50%',
+            end: '120% 50%',
           },
         });
       }
@@ -73,18 +89,21 @@ const Gallery = () => {
 
   return (
     <Flex
-      gap={'10rem'}
+      gap={gap}
       ref={ref}
       style={{
-        width: '150%',
+        width: '500%',
         height: '100vh',
         position: 'fixed',
         paddingLeft: '45%',
       }}
+      className="gallery-container"
     >
       {list.map((item, index) => {
         return (
           <GalleryItem
+            height={itemHeight}
+            width={itemWidth}
             key={index}
             index={index}
             imgUrl={item.imgUrl}

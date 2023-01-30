@@ -19,7 +19,7 @@ export const Container = styled.div<{ fluid?: boolean }>`
 `;
 
 export const Flex = styled.div<{
-  gap?: string;
+  gap?: number;
   flexEnd?: boolean;
   spaceBetween?: boolean;
   alignTop?: boolean;
@@ -29,7 +29,7 @@ export const Flex = styled.div<{
   display: flex;
   align-items: center;
 
-  gap: ${(props) => props.gap};
+  gap: ${(props) => props.gap + 'rem'};
 
   ${(props) =>
     props.flexEnd &&
