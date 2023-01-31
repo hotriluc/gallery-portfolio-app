@@ -18,13 +18,14 @@ const GlobalStyle = createGlobalStyle`
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         background:  ${(props) => props.theme.background} ;
         color:  ${(props: any) => props.theme.color};
-        overscroll-behavior: none;
         overflow-x: hidden;
     }
     
-    html, body {
-        min-height: 100%;
-        height: auto;
+    html, body, #root, main {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
 `;
 
@@ -42,7 +43,7 @@ const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (
     <ThemeProvider theme={darkTheme || lightTheme}>
       <GlobalStyle />
-      <main>{children}</main>
+      <>{children}</>
     </ThemeProvider>
   );
 };
