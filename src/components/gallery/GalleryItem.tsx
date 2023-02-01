@@ -22,6 +22,8 @@ const GalleryItem = ({
   const scroll = useScroll();
 
   const { clicked, projects } = useSnapshot(state);
+  const [hover, setHover] = useState(false);
+
   const click = () => (state.clicked = index === clicked ? null : index);
 
   useFrame((state, delta) => {
@@ -70,7 +72,7 @@ const GalleryItem = ({
 
       ref.current.material.grayscale = damp(
         ref.current.material.grayscale,
-        clicked === index ? 0 : Math.max(0, 1 - y),
+        hover || clicked === index ? 0 : Math.max(0, 1 - y),
         6,
         delta
       );
@@ -85,6 +87,8 @@ const GalleryItem = ({
       scale={[scale[0], scale[1]]}
       {...props}
       onClick={click}
+      onPointerOver={() => setHover(true)}
+      onPointerOut={() => setHover(false)}
     />
   );
 };
