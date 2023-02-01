@@ -1,6 +1,7 @@
 import { Scroll, ScrollControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import GalleryItem from './GalleryItem';
+
 import { state } from '../../utils/utils';
 import { useSnapshot } from 'valtio';
 
@@ -12,10 +13,8 @@ const Gallery = ({
   gap?: number;
 }) => {
   const { projects } = useSnapshot(state);
-  console.log(projects);
-
-  const itemSize = itemWidth + gap;
   const { width } = useThree((state) => state.viewport);
+  const itemSize = itemWidth + gap;
 
   return (
     <ScrollControls

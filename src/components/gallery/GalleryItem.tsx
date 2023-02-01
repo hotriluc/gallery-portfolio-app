@@ -2,31 +2,53 @@ import * as THREE from 'three';
 
 import { Image, useScroll } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useRef, useState } from 'react';
-import { Vector3Tuple } from 'three';
+import { useEffect, useRef, useState } from 'react';
+import { Color, Vector3Tuple } from 'three';
 import { useSnapshot } from 'valtio';
 import { state, damp } from '../../utils/utils';
+import { useLocation } from 'wouter';
 
 const GalleryItem = ({
   index,
   position,
   scale,
+  c = new THREE.Color(),
   ...props
 }: {
   index: number;
   position: Vector3Tuple;
   scale: Vector3Tuple;
-  totalItems: number;
+  c: Color;
 }) => {
   const ref = useRef<any>(null);
   const scroll = useScroll();
+  const [location, navigate] = useLocation();
 
   const { clicked, projects } = useSnapshot(state);
-  const [hover, setHover] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const click = () => (state.clicked = index === clicked ? null : index);
+  const onPointerDown = () => {
+    state.clicked = index === clicked ? null : index;
+  };
+
+  const onPointerUp = () => {
+    console.log(location);
+    navigate('/' + index);
+  };
+
+  const onPointerLeave = () => {
+    state.clicked = null;
+  };
+
+  useEffect(() => {
+    //@ts-ignore
+    scroll.scroll.current = sessionStorage.getItem('offsetY');
+  }, []);
 
   useFrame((state, delta) => {
+    //@ts-ignore
+    sessionStorage.setItem('offsetY', scroll.scroll.current);
+
     const y = scroll.curve(
       index / projects.length - 1.5 / projects.length,
       4 / projects.length
@@ -70,11 +92,16 @@ const GalleryItem = ({
           delta
         );
 
+      // Highlighting animation
       ref.current.material.grayscale = damp(
         ref.current.material.grayscale,
-        hover || clicked === index ? 0 : Math.max(0, 1 - y),
+        hovered || clicked === index ? 0 : Math.max(0, 1 - y),
         6,
         delta
+      );
+      ref.current.material.color.lerp(
+        c.set(hovered || clicked === index ? 'white' : '#aaa'),
+        hovered ? 0.3 : 0.1
       );
     }
   });
@@ -86,9 +113,11 @@ const GalleryItem = ({
       position={position}
       scale={[scale[0], scale[1]]}
       {...props}
-      onClick={click}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
+      onPointerDown={onPointerDown}
+      onPointerLeave={onPointerLeave}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerUp={onPointerUp}
     />
   );
 };
