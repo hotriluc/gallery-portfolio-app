@@ -1,11 +1,20 @@
 import { Scroll, ScrollControls } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import GalleryItem from './GalleryItem';
+import { state } from '../../utils/utils';
+import { useSnapshot } from 'valtio';
 
-const urls: Array<number> = [1, 2, 3, 4, 5, 6];
+const Gallery = ({
+  itemWidth = 1.5,
+  gap = 0.3,
+}: {
+  itemWidth?: number;
+  gap?: number;
+}) => {
+  const { urls } = useSnapshot(state);
+  console.log(urls);
 
-const Gallery = ({ w = 4, gap = 0.7 }: { w?: number; gap?: number }) => {
-  const itemSize = w + gap;
+  const itemSize = itemWidth + gap;
   const { width } = useThree((state) => state.viewport);
 
   return (
@@ -21,7 +30,7 @@ const Gallery = ({ w = 4, gap = 0.7 }: { w?: number; gap?: number }) => {
             key={index}
             index={index}
             position={[index * itemSize, 0, 0]}
-            scale={[w, 4, 1]}
+            scale={[itemWidth, 4, 1]}
             //@ts-ignore
             url={'/image1.jpg'}
           />
