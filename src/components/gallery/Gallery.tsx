@@ -11,8 +11,8 @@ const Gallery = ({
   itemWidth?: number;
   gap?: number;
 }) => {
-  const { urls } = useSnapshot(state);
-  console.log(urls);
+  const { projects } = useSnapshot(state);
+  console.log(projects);
 
   const itemSize = itemWidth + gap;
   const { width } = useThree((state) => state.viewport);
@@ -21,11 +21,11 @@ const Gallery = ({
     <ScrollControls
       horizontal
       damping={1}
-      pages={(width - itemSize + urls.length * itemSize) / width}
+      pages={(width - itemSize + projects.length * itemSize) / width}
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        {urls.map((url, index) => (
+        {projects.map((project, index) => (
           <GalleryItem
             key={index}
             index={index}

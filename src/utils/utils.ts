@@ -1,8 +1,28 @@
 import * as THREE from 'three';
 import { proxy } from 'valtio';
 
+interface ProjectInterface {
+  imgUrl: string;
+}
+interface ProxyInterface {
+  clicked: null | number;
+  projects: Array<ProjectInterface>;
+}
+
 export const damp = THREE.MathUtils.damp;
-export const state = proxy({
+export const state = proxy<ProxyInterface>({
   clicked: null,
-  urls: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((u) => `/${u}.jpg`),
+  projects: [
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+    { imgUrl: '/image1.jpg' },
+  ],
 });
