@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const Container = styled.div<{ fluid?: boolean }>`
   flex-grow: 1;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 7rem 5rem 0 5rem;
   position: relative;
   width: auto;
   height: 100%;
@@ -24,12 +24,18 @@ export const Flex = styled.div<{
   spaceBetween?: boolean;
   alignTop?: boolean;
   noHeight?: boolean;
+  column?: boolean;
 }>`
   position: relative;
   display: flex;
-  align-items: center;
 
   gap: ${(props) => props.gap + 'rem'};
+
+  ${(props) =>
+    props.column &&
+    css`
+      flex-direction: column;
+    `}
 
   ${(props) =>
     props.flexEnd &&

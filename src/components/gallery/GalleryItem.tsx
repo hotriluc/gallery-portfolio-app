@@ -32,7 +32,6 @@ const GalleryItem = ({
   };
 
   const onPointerUp = () => {
-    console.log(location);
     navigate('/' + index);
   };
 
@@ -40,15 +39,7 @@ const GalleryItem = ({
     state.clicked = null;
   };
 
-  useEffect(() => {
-    //@ts-ignore
-    scroll.scroll.current = sessionStorage.getItem('offsetY');
-  }, []);
-
   useFrame((state, delta) => {
-    //@ts-ignore
-    sessionStorage.setItem('offsetY', scroll.scroll.current);
-
     const y = scroll.curve(
       index / projects.length - 1.5 / projects.length,
       4 / projects.length

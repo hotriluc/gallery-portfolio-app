@@ -27,6 +27,10 @@ const GlobalStyle = createGlobalStyle`
       margin: 0;
       padding: 0;
     }
+
+    h1 {
+      font-size: 5rem;
+    }
 `;
 
 const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
