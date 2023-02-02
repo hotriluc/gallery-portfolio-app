@@ -19,7 +19,7 @@ const Gallery = ({
   return (
     <ScrollControls
       horizontal
-      damping={0.2}
+      damping={0.5}
       pages={(width - itemSize + projects.length * itemSize) / width}
       style={{ overflow: 'hidden hidden' }}
     >
