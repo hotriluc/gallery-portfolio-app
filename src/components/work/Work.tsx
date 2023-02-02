@@ -8,7 +8,9 @@ import { state } from '../../utils/utils';
 import { useSnapshot } from 'valtio';
 import { useRoute } from 'wouter';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
-import { Mesh, Vector2Tuple, Vector3Tuple } from 'three';
+import { Color, Mesh, Vector2Tuple, Vector3Tuple } from 'three';
+
+import * as THREE from 'three';
 
 const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
   const ref = useRef<Mesh>(null);
@@ -87,12 +89,14 @@ const WorkGalleryItem = ({
   position,
   scale,
   url,
+  c = new THREE.Color(),
   ...props
 }: {
   index: number;
   position: Vector3Tuple;
   scale: Vector2Tuple;
   url: string;
+  c?: Color;
 }) => {
   const ref = useRef<any>();
   const [hovered, setHovered] = useState(false);
@@ -108,17 +112,37 @@ const WorkGalleryItem = ({
         8,
         delta
       );
+      //   ref.current.rotation.y = damp(
+      //     ref.current.rotation.y,
+      //     -Math.PI * 2.3 + y,
+      //     8,
+      //     delta
+      //   );
       ref.current.material.scale[0] = ref.current.scale.x = damp(
         ref.current.scale.x,
         hovered ? 4.7 : scale[0],
         6,
         delta
       );
+
+      ref.current.material.grayscale = damp(
+        ref.current.material.grayscale,
+        hovered ? 0 : Math.max(0, 1 - y),
+        6,
+        delta
+      );
+
+      ref.current.material.color.lerp(
+        c.set(hovered ? 'white' : '#aaa'),
+        hovered ? 0.3 : 0.1
+      );
     }
   });
   return (
     //@ts-ignore
     <Image
+      transparent={hovered ? false : true}
+      opacity={0.9}
       ref={ref}
       key={index}
       position={position}
