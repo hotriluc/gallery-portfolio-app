@@ -5,7 +5,10 @@ export interface ProjectInterface {
   imgUrl: string;
   title?: string;
   description?: string;
-  images?: Array<string>;
+  images?: Array<{
+    url: string;
+    position: { x?: number; y?: number; z?: number };
+  }>;
 }
 interface ProxyInterface {
   clicked: null | number;
@@ -25,11 +28,11 @@ export const state = proxy<ProxyInterface>({
         Please feel free to ask me If you ever need help.
     `,
       images: [
-        '/image1.jpg',
-        '/image1.jpg',
-        '/image1.jpg',
-        '/image1.jpg',
-        '/image1.jpg',
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
+        { url: '/image1.jpg', position: { y: 0, z: -4 } },
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
+        { url: '/image1.jpg', position: { y: 0, z: -4 } },
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
       ],
     },
     {

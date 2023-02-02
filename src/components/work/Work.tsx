@@ -1,6 +1,6 @@
 import { ScrollControls, Scroll, useScroll, Image } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { damp } from 'three/src/math/MathUtils';
 import { Container, Flex } from '../../styles/Global.styles';
 
@@ -67,11 +67,15 @@ const WorkGallery = ({
 
   return (
     <group position={[10, 0, 0]}>
-      {project.images?.map((url, index) => (
+      {project.images?.map((img, index) => (
         <Image
           key={index}
-          url={url}
-          position={[index * itemTotalWidth, 0, 0]}
+          url={img.url}
+          position={[
+            index * itemTotalWidth,
+            img.position.y || 0,
+            img.position.z || 0,
+          ]}
           scale={[w, 4.5]}
         />
       ))}
@@ -100,6 +104,10 @@ const Work = ({
     ? 1 +
       (width - itemTotalWidth + project.images?.length * itemTotalWidth) / width
     : 1;
+
+  useEffect(() => {
+    state.clicked = null;
+  }, []);
 
   return (
     <ScrollControls
