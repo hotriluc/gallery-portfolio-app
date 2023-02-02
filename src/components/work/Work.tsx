@@ -1,6 +1,6 @@
 import { ScrollControls, Scroll, useScroll, Image } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { damp } from 'three/src/math/MathUtils';
 import { Container, Flex } from '../../styles/Global.styles';
 
@@ -8,7 +8,7 @@ import { state } from '../../utils/utils';
 import { useSnapshot } from 'valtio';
 import { useRoute } from 'wouter';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
-import { Mesh } from 'three';
+import { Mesh, Vector2Tuple, Vector3Tuple } from 'three';
 
 const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
   const ref = useRef<Mesh>(null);
@@ -36,17 +36,15 @@ const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
   });
 
   return (
-    <>
-      <mesh
-        ref={ref}
-        rotation={[0, -2.5, 0]}
-        position={[0, 0, -2]}
-        scale={[0, 1.0, 1.0]}
-      >
-        <meshNormalMaterial />
-        <boxGeometry args={[3, 6, 0.3]} />
-      </mesh>
-    </>
+    <mesh
+      ref={ref}
+      rotation={[0, -2.5, 0]}
+      position={[0, 0, -2]}
+      scale={[0, 1.0, 1.0]}
+    >
+      <meshNormalMaterial />
+      <boxGeometry args={[3, 6, 0.3]} />
+    </mesh>
   );
 };
 
@@ -68,18 +66,72 @@ const WorkGallery = ({
   return (
     <group position={[10, 0, 0]}>
       {project.images?.map((img, index) => (
-        <Image
+        <WorkGalleryItem
           key={index}
-          url={img.url}
+          index={index}
           position={[
             index * itemTotalWidth,
             img.position.y || 0,
             img.position.z || 0,
           ]}
           scale={[w, 4.5]}
+          url={img.url}
         />
       ))}
     </group>
+  );
+};
+
+const WorkGalleryItem = ({
+  index,
+  position,
+  scale,
+  url,
+  ...props
+}: {
+  index: number;
+  position: Vector3Tuple;
+  scale: Vector2Tuple;
+  url: string;
+}) => {
+  const ref = useRef<any>();
+  const [hovered, setHovered] = useState(false);
+  const scroll = useScroll();
+
+  useFrame((state, delta) => {
+    const y = scroll.curve(index / 5 - 1.5 / 5, 4 / 5);
+    if (ref.current) {
+      // On click animation
+      ref.current.material.scale[1] = ref.current.scale.y = damp(
+        ref.current.scale.y,
+        hovered ? 7 : scale[1] + y,
+        8,
+        delta
+      );
+      ref.current.material.scale[0] = ref.current.scale.x = damp(
+        ref.current.scale.x,
+        hovered ? 4.7 : scale[0],
+        6,
+        delta
+      );
+    }
+  });
+  return (
+    //@ts-ignore
+    <Image
+      ref={ref}
+      key={index}
+      position={position}
+      scale={scale}
+      url={url}
+      {...props}
+      onPointerMove={() => {
+        setHovered(true);
+      }}
+      onPointerLeave={() => {
+        setHovered(false);
+      }}
+    />
   );
 };
 
