@@ -1,5 +1,5 @@
-import { Scroll, ScrollControls, useScroll } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
+import { Scroll, ScrollControls } from '@react-three/drei';
+import { useThree } from '@react-three/fiber';
 import GalleryItem from './GalleryItem';
 
 import { state } from '../../utils/utils';

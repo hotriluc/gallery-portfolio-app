@@ -1,5 +1,4 @@
 import { ScrollControls, Scroll } from '@react-three/drei';
-import React from 'react';
 
 const About = () => {
   return (

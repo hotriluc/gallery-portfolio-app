@@ -1,7 +1,7 @@
 import { ScrollControls, Scroll, useScroll, Image } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
-import { damp, lerp } from 'three/src/math/MathUtils';
+import { damp } from 'three/src/math/MathUtils';
 import { Container, Flex } from '../../styles/Global.styles';
 
 import { state } from '../../utils/utils';
@@ -10,28 +10,9 @@ import { useRoute } from 'wouter';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
 import { Mesh } from 'three';
 
-interface WorkSceneProps {
-  projectId: number;
-  galleryGap?: number;
-  galleryItemWidth?: number;
-}
-
-const WorkScene = ({
-  projectId,
-  galleryGap = 0.4,
-  galleryItemWidth = 3,
-}: WorkSceneProps) => {
+const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
   const ref = useRef<Mesh>(null);
   const scroll = useScroll();
-  const { width } = useThree((state) => state.viewport);
-  const { projects } = useSnapshot(state);
-  const project = projects[projectId];
-
-  const itemTotalWidth = galleryGap + galleryItemWidth;
-
-  const pagesSize = project.images
-    ? 1 + (width - 0.4 + 3 + project.images?.length * (0.4 + 3)) / width
-    : 1;
 
   useFrame((state, delta) => {
     //@ts-ignore
@@ -50,7 +31,6 @@ const WorkScene = ({
         5,
         delta
       );
-
       ref.current.scale.x = damp(ref.current.scale.x, 1.0 - 0.5 * y, 5, delta);
     }
   });
@@ -66,33 +46,59 @@ const WorkScene = ({
         <meshNormalMaterial />
         <boxGeometry args={[3, 6, 0.3]} />
       </mesh>
-
-      <group position={[width, 0, 0]}>
-        {project.images?.map((url, index) => (
-          <Image
-            key={index}
-            url={url}
-            position={[index * itemTotalWidth, 0, 0]}
-            scale={[galleryItemWidth, 4.5]}
-          />
-        ))}
-      </group>
     </>
   );
 };
 
-const Work = () => {
-  const { projects } = useSnapshot(state);
+const WorkGallery = ({
+  projectId,
+  w,
+  gap,
+}: {
+  projectId: number;
+  w: number;
+  gap: number;
+}) => {
+  const { width } = useThree((state) => state.viewport);
+  const itemTotalWidth = w + gap;
 
+  const { projects } = useSnapshot(state);
+  const project = projects[projectId];
+
+  return (
+    <group position={[10, 0, 0]}>
+      {project.images?.map((url, index) => (
+        <Image
+          key={index}
+          url={url}
+          position={[index * itemTotalWidth, 0, 0]}
+          scale={[w, 4.5]}
+        />
+      ))}
+    </group>
+  );
+};
+
+const Work = ({
+  galleryGap = 0.8,
+  galleryItemWidth = 3,
+}: {
+  galleryGap?: number;
+  galleryItemWidth?: number;
+}) => {
   const [match, params] = useRoute('/:id');
   //@ts-ignore
   const { id: projectId } = params;
+
+  const { projects } = useSnapshot(state);
   const project = projects[projectId];
 
   const { width } = useThree((state) => state.viewport);
+  const itemTotalWidth = galleryGap + galleryItemWidth;
 
   const pagesSize = project.images
-    ? 1 + (width - 0.4 + 3 + project.images?.length * (0.4 + 3)) / width
+    ? 1 +
+      (width - itemTotalWidth + project.images?.length * itemTotalWidth) / width
     : 1;
 
   return (
@@ -103,7 +109,12 @@ const Work = () => {
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        <WorkScene projectId={projectId} />
+        <WorkThumbnail pagesSize={pagesSize} />
+        <WorkGallery
+          projectId={projectId}
+          w={galleryItemWidth}
+          gap={galleryGap}
+        />
       </Scroll>
       <Scroll html>
         <Container fluid>

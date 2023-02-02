@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import { Image, useScroll } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Color, Vector3Tuple } from 'three';
 import { useSnapshot } from 'valtio';
 import { state, damp } from '../../utils/utils';
