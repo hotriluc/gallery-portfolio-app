@@ -13,8 +13,14 @@ import { Color, Mesh, Vector2Tuple, Vector3Tuple } from 'three';
 import * as THREE from 'three';
 
 const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
-  const ref = useRef<Mesh>(null);
+  const ref = useRef<any>(null);
   const scroll = useScroll();
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.material.side = THREE.DoubleSide;
+    }
+  });
 
   useFrame((state, delta) => {
     //@ts-ignore
@@ -30,23 +36,33 @@ const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
       ref.current.rotation.y = damp(
         ref.current.rotation.y,
         2.5 + y * 2 * Math.PI,
-        5,
+        3,
         delta
       );
-      ref.current.scale.x = damp(ref.current.scale.x, 1.0 - 0.5 * y, 5, delta);
+
+      ref.current.material.scale[1] = ref.current.scale.y = damp(
+        ref.current.scale.y,
+        9 - 3.5 * y,
+        6,
+        delta
+      );
+      ref.current.material.scale[0] = ref.current.scale.x = damp(
+        ref.current.scale.x,
+        5 - 3 * y,
+        6,
+        delta
+      );
     }
   });
 
   return (
-    <mesh
+    <Image
       ref={ref}
       rotation={[0, -2.5, 0]}
       position={[0, 0, -2]}
-      scale={[0, 1.0, 1.0]}
-    >
-      <meshNormalMaterial />
-      <boxGeometry args={[3, 6, 0.3]} />
-    </mesh>
+      scale={[5, 9]}
+      url={'/image1.jpg'}
+    />
   );
 };
 
