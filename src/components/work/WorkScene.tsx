@@ -30,10 +30,12 @@ const WorkScene = ({
   const { width } = useThree((state) => state.viewport);
 
   const itemTotalWidth = galleryGap + galleryItemWidth;
-  const pagesSize = project.images
-    ? 1 +
-      (width - itemTotalWidth + project.images?.length * itemTotalWidth) / width
-    : 1;
+  const pagesSize =
+    project && project.images
+      ? 1 +
+        (width - itemTotalWidth + project.images?.length * itemTotalWidth) /
+          width
+      : 1;
 
   useEffect(() => {
     state.clicked = null;
@@ -47,26 +49,33 @@ const WorkScene = ({
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        <WorkThumbnail projectId={parseInt(projectId)} pagesSize={pagesSize} />
-        <WorkGallery
-          projectId={parseInt(projectId)}
-          w={galleryItemWidth}
-          gap={galleryGap}
-        />
+        {project && (
+          <>
+            <WorkThumbnail
+              projectId={parseInt(projectId)}
+              pagesSize={pagesSize}
+            />
+            <WorkGallery
+              projectId={parseInt(projectId)}
+              w={galleryItemWidth}
+              gap={galleryGap}
+            />
+          </>
+        )}
       </Scroll>
       <Scroll html>
         <Container fluid>
           <Flex gap={5} style={{ padding: '4rem' }}>
             {/* Info section */}
             <Flex column style={{ width: '100vw', height: '100vh' }}>
-              <WorkHeading>{project.title || 'Untitled'}</WorkHeading>
-              <WorkDescription>
-                {project.description || 'No description.'}
-              </WorkDescription>
-            </Flex>
-            {/* Gallery section */}
-            <Flex>
-              <div>gallery</div>
+              {project && (
+                <>
+                  <WorkHeading>{project.title || 'Untitled'}</WorkHeading>
+                  <WorkDescription>
+                    {project.description || 'No description.'}
+                  </WorkDescription>
+                </>
+              )}
             </Flex>
           </Flex>
         </Container>
