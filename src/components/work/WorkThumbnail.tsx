@@ -8,13 +8,12 @@ import { Image, Text, useScroll } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import { damp, state } from '../../utils/utils';
 
-const WorkThumbnail = ({
-  pagesSize,
-  projectId,
-}: {
+interface WorkThumbnailProps {
   pagesSize: number;
   projectId: number;
-}) => {
+}
+
+const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
   const scroll = useScroll();
 
   const ref = useRef<any>(null);

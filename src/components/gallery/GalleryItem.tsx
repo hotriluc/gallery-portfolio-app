@@ -1,12 +1,15 @@
 import * as THREE from 'three';
-
-import { Image, useScroll } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
-import { useRef, useState } from 'react';
-import { Color, Vector3Tuple } from 'three';
-import { useSnapshot } from 'valtio';
 import { state, damp } from '../../utils/utils';
+
+import { useRef, useState } from 'react';
+
+import { useFrame } from '@react-three/fiber';
+import { Image, useScroll } from '@react-three/drei';
+
+import { useSnapshot } from 'valtio';
 import { useLocation } from 'wouter';
+
+import { IGalleryItem } from '../../interfaces/Gallery.interface';
 
 const GalleryItem = ({
   index,
@@ -14,12 +17,7 @@ const GalleryItem = ({
   scale,
   c = new THREE.Color(),
   ...props
-}: {
-  index: number;
-  position: Vector3Tuple;
-  scale: Vector3Tuple;
-  c: Color;
-}) => {
+}: IGalleryItem) => {
   const ref = useRef<any>(null);
   const scroll = useScroll();
   const [location, navigate] = useLocation();

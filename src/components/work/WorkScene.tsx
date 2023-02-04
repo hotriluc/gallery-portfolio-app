@@ -11,16 +11,15 @@ import { state } from '../../utils/utils';
 
 import { useRoute } from 'wouter';
 
+import { IGallery } from '../../interfaces/Gallery.interface';
+
 import WorkThumbnail from './WorkThumbnail';
 import WorkGallery from './WorkGallery';
 
-const Work = ({
-  galleryGap = 0.8,
-  galleryItemWidth = 3,
-}: {
-  galleryGap?: number;
-  galleryItemWidth?: number;
-}) => {
+const WorkScene = ({
+  gap: galleryGap = 0.8,
+  w: galleryItemWidth = 3,
+}: IGallery) => {
   const [match, params] = useRoute('/:id');
   //@ts-ignore
   const { id: projectId } = params;
@@ -76,4 +75,4 @@ const Work = ({
   );
 };
 
-export default Work;
+export default WorkScene;

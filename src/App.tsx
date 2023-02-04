@@ -3,9 +3,10 @@ import About from './components/about/About';
 
 import Gallery from './components/gallery/Gallery';
 import Wrapper from './components/layout/Wrapper';
-import Work from './components/work/Work';
+import Work from './components/work/WorkScene';
 
 import { useLocation, Switch, Route, Link } from 'wouter';
+import WorkScene from './components/work/WorkScene';
 
 function App() {
   const [location] = useLocation();
@@ -21,7 +22,7 @@ function App() {
             <About />
           </Route>
           <Route path="/:id">
-            <Work />
+            <WorkScene />
           </Route>
         </Switch>
       </Canvas>

@@ -1,16 +1,13 @@
 import { useSnapshot } from 'valtio';
 import { state } from '../../utils/utils';
+
+import { IGallery } from '../../interfaces/Gallery.interface';
+
 import WorkGalleryItem from './WorkGalleryItem';
 
-const WorkGallery = ({
-  projectId,
-  w,
-  gap,
-}: {
-  projectId: number;
-  w: number;
-  gap: number;
-}) => {
+type Props = { projectId: number } & IGallery;
+
+const WorkGallery = ({ projectId, w = 3, gap = 0.8 }: Props) => {
   const { projects } = useSnapshot(state);
   const project = projects[projectId];
 

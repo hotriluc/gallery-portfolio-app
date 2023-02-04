@@ -1,12 +1,12 @@
 import * as THREE from 'three';
-import { Color, Vector2Tuple, Vector3Tuple } from 'three';
+import { damp } from '../../utils/utils';
 
 import { useRef, useState } from 'react';
 
 import { useFrame } from '@react-three/fiber';
 import { Image, useScroll } from '@react-three/drei';
 
-import { damp } from '../../utils/utils';
+import { IGalleryItem } from '../../interfaces/Gallery.interface';
 
 const WorkGalleryItem = ({
   index,
@@ -15,13 +15,7 @@ const WorkGalleryItem = ({
   url,
   c = new THREE.Color(),
   ...props
-}: {
-  index: number;
-  position: Vector3Tuple;
-  scale: Vector2Tuple;
-  url: string;
-  c?: Color;
-}) => {
+}: IGalleryItem) => {
   const scroll = useScroll();
 
   const ref = useRef<any>();
