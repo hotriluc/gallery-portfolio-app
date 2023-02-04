@@ -1,228 +1,18 @@
-import { ScrollControls, Scroll, useScroll, Image } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef, useState } from 'react';
-import { damp } from 'three/src/math/MathUtils';
+import { useEffect } from 'react';
+
 import { Container, Flex } from '../../styles/Global.styles';
-
-import { state } from '../../utils/utils';
-import { useSnapshot } from 'valtio';
-import { useRoute } from 'wouter';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
-import { Color, Mesh, Vector2Tuple, Vector3Tuple } from 'three';
 
-import * as THREE from 'three';
+import { useThree } from '@react-three/fiber';
+import { ScrollControls, Scroll } from '@react-three/drei';
 
-const WorkThumbnail = ({
-  pagesSize,
-  projectId,
-}: {
-  pagesSize: number;
-  projectId: number;
-}) => {
-  const ref = useRef<any>(null);
-  const ref2 = useRef<any>(null);
+import { useSnapshot } from 'valtio';
+import { state } from '../../utils/utils';
 
-  const { projects } = useSnapshot(state);
-  const project = projects[projectId];
-  const nextProjectIsExisted = projectId < projects.length - 1;
+import { useRoute } from 'wouter';
 
-  const scroll = useScroll();
-  const [isNext, setIsNext] = useState(false);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.material.side = THREE.DoubleSide;
-    }
-    if (nextProjectIsExisted && ref2.current) {
-      ref2.current.material.side = THREE.DoubleSide;
-    }
-  });
-
-  useFrame((state, delta) => {
-    //@ts-ignore
-    const y = scroll.scroll.current;
-
-    if (ref.current) {
-      setIsNext(nextProjectIsExisted && y > 0.8);
-
-      ref.current.position.x = damp(
-        ref.current.position.x,
-        3 + y * pagesSize * 10,
-        3,
-        delta
-      );
-      ref.current.rotation.y = damp(
-        ref.current.rotation.y,
-        2.5 + y * 2 * Math.PI,
-        3,
-        delta
-      );
-
-      ref.current.material.scale[1] = ref.current.scale.y = damp(
-        ref.current.scale.y,
-        9 - 3.5 * y,
-        6,
-        delta
-      );
-      ref.current.material.scale[0] = ref.current.scale.x = damp(
-        ref.current.scale.x,
-        5 - 3 * y,
-        6,
-        delta
-      );
-    }
-
-    if (ref2.current) {
-      ref2.current.position.x = ref.current.position.x;
-      ref2.current.rotation.y = !isNext
-        ? ref.current.rotation.y
-        : damp(
-            ref2.current.rotation.y,
-            ref.current.rotation.y + 2 * Math.PI,
-            3,
-            delta
-          );
-      ref2.current.material.scale[1] = ref2.current.scale.y =
-        ref.current.material.scale[1];
-      ref2.current.material.scale[0] = ref2.current.scale.x =
-        ref.current.material.scale[0];
-
-      ref2.current.material.grayscale = 1;
-    }
-  });
-
-  return (
-    <>
-      <Image
-        visible={!isNext}
-        ref={ref}
-        rotation={[0, -2.5, 0]}
-        position={[0, 0, -2]}
-        scale={[5, 9]}
-        url={project.imgUrl}
-      />
-      {nextProjectIsExisted && (
-        <Image
-          visible={isNext}
-          ref={ref2}
-          rotation={[0, -2.5, 0]}
-          position={[0, 0, -2]}
-          scale={[5, 9]}
-          url={projects[projectId + 1].imgUrl}
-        />
-      )}
-    </>
-  );
-};
-
-const WorkGallery = ({
-  projectId,
-  w,
-  gap,
-}: {
-  projectId: number;
-  w: number;
-  gap: number;
-}) => {
-  const { width } = useThree((state) => state.viewport);
-  const itemTotalWidth = w + gap;
-
-  const { projects } = useSnapshot(state);
-  const project = projects[projectId];
-
-  return (
-    <group position={[10, 0, 0]}>
-      {project.images?.map((img, index) => (
-        <WorkGalleryItem
-          key={index}
-          index={index}
-          position={[
-            index * itemTotalWidth,
-            img.position.y || 0,
-            img.position.z || 0,
-          ]}
-          scale={[w, 4.5]}
-          url={img.url}
-        />
-      ))}
-    </group>
-  );
-};
-
-const WorkGalleryItem = ({
-  index,
-  position,
-  scale,
-  url,
-  c = new THREE.Color(),
-  ...props
-}: {
-  index: number;
-  position: Vector3Tuple;
-  scale: Vector2Tuple;
-  url: string;
-  c?: Color;
-}) => {
-  const ref = useRef<any>();
-  const [hovered, setHovered] = useState(false);
-  const scroll = useScroll();
-
-  useFrame((state, delta) => {
-    const y = scroll.curve(index / 5 - 1.5 / 5, 4 / 5);
-    if (ref.current) {
-      // On click animation
-      ref.current.material.scale[1] = ref.current.scale.y = damp(
-        ref.current.scale.y,
-        hovered ? 7 : scale[1] + y,
-        8,
-        delta
-      );
-      //   ref.current.rotation.y = damp(
-      //     ref.current.rotation.y,
-      //     -Math.PI * 2.3 + y,
-      //     8,
-      //     delta
-      //   );
-      ref.current.material.scale[0] = ref.current.scale.x = damp(
-        ref.current.scale.x,
-        hovered ? 4.7 : scale[0],
-        6,
-        delta
-      );
-
-      ref.current.material.grayscale = damp(
-        ref.current.material.grayscale,
-        hovered ? 0 : Math.max(0, 1 - y),
-        6,
-        delta
-      );
-
-      ref.current.material.color.lerp(
-        c.set(hovered ? 'white' : '#aaa'),
-        hovered ? 0.3 : 0.1
-      );
-    }
-  });
-  return (
-    //@ts-ignore
-    <Image
-      transparent={hovered ? false : true}
-      opacity={0.9}
-      ref={ref}
-      key={index}
-      position={position}
-      scale={scale}
-      url={url}
-      {...props}
-      onPointerMove={() => {
-        setHovered(true);
-      }}
-      onPointerLeave={() => {
-        setHovered(false);
-      }}
-    />
-  );
-};
+import WorkThumbnail from './WorkThumbnail';
+import WorkGallery from './WorkGallery';
 
 const Work = ({
   galleryGap = 0.8,
@@ -239,8 +29,8 @@ const Work = ({
   const project = projects[projectId];
 
   const { width } = useThree((state) => state.viewport);
-  const itemTotalWidth = galleryGap + galleryItemWidth;
 
+  const itemTotalWidth = galleryGap + galleryItemWidth;
   const pagesSize = project.images
     ? 1 +
       (width - itemTotalWidth + project.images?.length * itemTotalWidth) / width
