@@ -12,13 +12,29 @@ import { Color, Mesh, Vector2Tuple, Vector3Tuple } from 'three';
 
 import * as THREE from 'three';
 
-const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
+const WorkThumbnail = ({
+  pagesSize,
+  projectId,
+}: {
+  pagesSize: number;
+  projectId: number;
+}) => {
   const ref = useRef<any>(null);
+  const ref2 = useRef<any>(null);
+
+  const { projects } = useSnapshot(state);
+  const project = projects[projectId];
+  const nextProjectIsExisted = projectId < projects.length - 1;
+
   const scroll = useScroll();
+  const [isNext, setIsNext] = useState(false);
 
   useEffect(() => {
     if (ref.current) {
       ref.current.material.side = THREE.DoubleSide;
+    }
+    if (nextProjectIsExisted && ref2.current) {
+      ref2.current.material.side = THREE.DoubleSide;
     }
   });
 
@@ -27,6 +43,8 @@ const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
     const y = scroll.scroll.current;
 
     if (ref.current) {
+      setIsNext(nextProjectIsExisted && y > 0.8);
+
       ref.current.position.x = damp(
         ref.current.position.x,
         3 + y * pagesSize * 10,
@@ -53,16 +71,47 @@ const WorkThumbnail = ({ pagesSize }: { pagesSize: number }) => {
         delta
       );
     }
+
+    if (ref2.current) {
+      ref2.current.position.x = ref.current.position.x;
+      ref2.current.rotation.y = !isNext
+        ? ref.current.rotation.y
+        : damp(
+            ref2.current.rotation.y,
+            ref.current.rotation.y + 2 * Math.PI,
+            3,
+            delta
+          );
+      ref2.current.material.scale[1] = ref2.current.scale.y =
+        ref.current.material.scale[1];
+      ref2.current.material.scale[0] = ref2.current.scale.x =
+        ref.current.material.scale[0];
+
+      ref2.current.material.grayscale = 1;
+    }
   });
 
   return (
-    <Image
-      ref={ref}
-      rotation={[0, -2.5, 0]}
-      position={[0, 0, -2]}
-      scale={[5, 9]}
-      url={'/image1.jpg'}
-    />
+    <>
+      <Image
+        visible={!isNext}
+        ref={ref}
+        rotation={[0, -2.5, 0]}
+        position={[0, 0, -2]}
+        scale={[5, 9]}
+        url={project.imgUrl}
+      />
+      {nextProjectIsExisted && (
+        <Image
+          visible={isNext}
+          ref={ref2}
+          rotation={[0, -2.5, 0]}
+          position={[0, 0, -2]}
+          scale={[5, 9]}
+          url={projects[projectId + 1].imgUrl}
+        />
+      )}
+    </>
   );
 };
 
@@ -209,9 +258,9 @@ const Work = ({
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        <WorkThumbnail pagesSize={pagesSize} />
+        <WorkThumbnail projectId={parseInt(projectId)} pagesSize={pagesSize} />
         <WorkGallery
-          projectId={projectId}
+          projectId={parseInt(projectId)}
           w={galleryItemWidth}
           gap={galleryGap}
         />

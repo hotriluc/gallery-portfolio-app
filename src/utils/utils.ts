@@ -36,7 +36,7 @@ export const state = proxy<ProxyInterface>({
       ],
     },
     {
-      imgUrl: '/image1.jpg',
+      imgUrl: '/image2.jpg',
       title: 'Project Name 2',
       description: `
           This is project description. If
