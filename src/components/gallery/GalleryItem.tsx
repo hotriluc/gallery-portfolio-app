@@ -27,10 +27,10 @@ const GalleryItem = ({
 
   const onPointerDown = () => {
     state.clicked = index === clicked ? null : index;
-  };
 
-  const onPointerUp = () => {
-    navigate('/' + index);
+    setTimeout(() => {
+      navigate('/' + index);
+    }, 300);
   };
 
   const onPointerLeave = () => {
@@ -106,7 +106,6 @@ const GalleryItem = ({
       onPointerLeave={onPointerLeave}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      onPointerUp={onPointerUp}
     />
   );
 };
