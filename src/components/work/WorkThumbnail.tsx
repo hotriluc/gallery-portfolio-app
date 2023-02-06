@@ -7,6 +7,7 @@ import { Image, Text, useScroll } from '@react-three/drei';
 
 import { useSnapshot } from 'valtio';
 import { damp, state } from '../../utils/utils';
+import { useLocation } from 'wouter';
 
 interface WorkThumbnailProps {
   pagesSize: number;
@@ -15,16 +16,30 @@ interface WorkThumbnailProps {
 
 const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
   const scroll = useScroll();
+  const [location, navigate] = useLocation();
 
   const ref = useRef<any>(null);
   const ref2 = useRef<any>(null);
 
   const [isNext, setIsNext] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const { projects } = useSnapshot(state);
   const project = projects[projectId];
   const nextProjectIsExisted = projectId < projects.length - 1;
+
+  // Redirect to next project
+  const redirectToNextProject = () => {
+    setClicked(false);
+
+    setTimeout(() => {
+      // only if y > 0.8
+      if (isNext) {
+        navigate(`/${projectId + 1}`);
+      }
+    }, 300);
+  };
 
   useEffect(() => {
     if (ref.current) {
@@ -33,7 +48,18 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
     if (nextProjectIsExisted && ref2.current) {
       ref2.current.material.side = THREE.DoubleSide;
     }
-  });
+  }, []);
+
+  // Reset position and rotation
+  useEffect(() => {
+    ref.current.position.x = 0;
+    ref.current.rotation.y = -2.5;
+
+    return () => {
+      //@ts-ignore
+      scroll.scroll.current = 0.001;
+    };
+  }, [projectId]);
 
   useFrame((state, delta) => {
     //@ts-ignore
@@ -71,7 +97,15 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
 
     if (ref2.current) {
       //Positioning
-      ref2.current.position.x = ref.current.position.x;
+      // ref2.current.position.x = ref.current.position.x;
+      const { x } = ref.current.position;
+      ref2.current.position.x = damp(
+        ref2.current.position.x,
+        clicked ? x + 0.3 : x,
+        3,
+        delta
+      );
+
       ref2.current.rotation.y = !isNext
         ? ref.current.rotation.y
         : damp(
@@ -121,6 +155,8 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
           url={projects[projectId + 1].imgUrl}
           onPointerEnter={() => setHovered(true)}
           onPointerLeave={() => setHovered(false)}
+          onPointerDown={() => setClicked(true)}
+          onPointerUp={redirectToNextProject}
         >
           <Text position={[0, 0, 0.5]} fontSize={0.5}>
             Next
