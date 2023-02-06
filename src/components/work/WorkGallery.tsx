@@ -17,6 +17,7 @@ const WorkGallery = ({ projectId, w = 3, gap = 0.8 }: Props) => {
     <group position={[10, 0, 0]}>
       {project.images?.map((img, index) => (
         <WorkGalleryItem
+          projectId={projectId}
           key={index}
           index={index}
           position={[

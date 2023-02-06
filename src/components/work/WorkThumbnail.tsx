@@ -50,6 +50,8 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
     }
   }, []);
 
+  console.log(scroll);
+
   // Reset position and rotation
   useEffect(() => {
     ref.current.position.x = 0;
@@ -57,7 +59,6 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
 
     return () => {
       //@ts-ignore
-      scroll.scroll.current = 0.001;
     };
   }, [projectId]);
 
@@ -66,11 +67,16 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
     const y = scroll.scroll.current;
 
     if (ref.current) {
-      setIsNext(nextProjectIsExisted && y > 0.8);
+      setIsNext(nextProjectIsExisted && y > 0.9);
 
       ref.current.position.x = damp(
         ref.current.position.x,
-        3 + y * pagesSize * 10,
+        3 +
+          y *
+            (project.images
+              ? pagesSize - 1 + (project.images.length - 1) / pagesSize
+              : 0.5) *
+            8.5,
         3,
         delta
       );

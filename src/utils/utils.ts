@@ -33,6 +33,8 @@ export const state = proxy<ProxyInterface>({
         { url: '/image1.jpg', position: { y: 0, z: 0 } },
         { url: '/image1.jpg', position: { y: 0, z: -4 } },
         { url: '/image1.jpg', position: { y: 0, z: 0 } },
+        { url: '/image1.jpg', position: { y: 0, z: -4 } },
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
       ],
     },
     {
@@ -43,6 +45,11 @@ export const state = proxy<ProxyInterface>({
           you want to change It in the future look in utils.ts file.
           Please feel free to ask me If you ever need help.
       `,
+      images: [
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
+        { url: '/image1.jpg', position: { y: 0, z: -4 } },
+        { url: '/image1.jpg', position: { y: 0, z: 0 } },
+      ],
     },
     {
       imgUrl: '/image1.jpg',

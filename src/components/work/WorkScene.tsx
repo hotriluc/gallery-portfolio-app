@@ -35,7 +35,9 @@ const WorkScene = ({
       ? 1 +
         (width - itemTotalWidth + project.images?.length * itemTotalWidth) /
           width
-      : 1;
+      : 1.1;
+
+  console.log(pagesSize);
 
   useEffect(() => {
     state.clicked = null;
