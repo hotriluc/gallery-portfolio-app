@@ -4,11 +4,15 @@ import About from './components/about/About';
 import Gallery from './components/gallery/Gallery';
 import Wrapper from './components/layout/Wrapper';
 
-import { useLocation, Switch, Route, Link } from 'wouter';
+import { useLocation, Switch, Route, Link, useRoute } from 'wouter';
 import WorkScene from './components/work/WorkScene';
+import { Navigation } from './styles/Global.styles';
 
 function App() {
   const [location] = useLocation();
+  const [match, params] = useRoute('/');
+
+  console.log(match);
 
   return (
     <>
@@ -26,11 +30,14 @@ function App() {
             </Route>
           </Switch>
         </Canvas>
-
-        <nav style={{ position: 'fixed', top: 0, left: '50%' }}>
-          <Link to="/">Works</Link>
-          <Link to="about">About</Link>
-        </nav>
+        <>
+          {match && (
+            <Navigation>
+              <Link to="/">Works</Link>
+              <Link to="about">About</Link>
+            </Navigation>
+          )}
+        </>
       </Wrapper>
     </>
   );

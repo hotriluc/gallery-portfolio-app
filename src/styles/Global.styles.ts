@@ -58,3 +58,17 @@ export const Flex = styled.div<{
       height: 0;
     `};
 `;
+
+export const Navigation = styled.nav`
+  display: flex;
+  gap: 4rem;
+  position: fixed;
+  top: 5%;
+  left: 45%;
+
+  a {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: ${(props) => props.theme.color};
+  }
+`;
