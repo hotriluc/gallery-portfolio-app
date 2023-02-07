@@ -45,7 +45,7 @@ const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme || lightTheme}>
+    <ThemeProvider theme={lightTheme || darkTheme}>
       <GlobalStyle />
       <>{children}</>
     </ThemeProvider>

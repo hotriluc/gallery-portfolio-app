@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Container, Flex } from '../../styles/Global.styles';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';

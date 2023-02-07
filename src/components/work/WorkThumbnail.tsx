@@ -31,8 +31,6 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
 
   // Redirect to next project
   const redirectToNextProject = () => {
-    setClicked(false);
-
     setTimeout(() => {
       // only if y > 0.8
       if (isNext) {
@@ -50,8 +48,6 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
     }
   }, []);
 
-  console.log(scroll);
-
   // Reset position and rotation
   useEffect(() => {
     ref.current.position.x = 0;
@@ -59,12 +55,14 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
 
     return () => {
       //@ts-ignore
+      scroll.scroll.current = 0.01;
+      scroll.el.scrollLeft = 0;
+      scroll.offset = 0;
     };
   }, [projectId]);
 
   useFrame((state, delta) => {
-    //@ts-ignore
-    const y = scroll.scroll.current;
+    const y = scroll.offset;
 
     if (ref.current) {
       setIsNext(nextProjectIsExisted && y > 0.9);
