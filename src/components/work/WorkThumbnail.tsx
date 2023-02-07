@@ -176,7 +176,7 @@ const WorkThumbnail = ({
           onPointerDown={() => setClicked(true)}
           onPointerUp={redirectToNextProject}
         >
-          <Text position={[0, 0, 0.5]} fontSize={0.5}>
+          <Text position={[0, 0, 0.2]} fontSize={0.5}>
             Next
           </Text>
         </Image>

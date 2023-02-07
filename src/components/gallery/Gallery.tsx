@@ -7,6 +7,7 @@ import { useSnapshot } from 'valtio';
 import { IGallery } from '../../interfaces/Gallery.interface';
 
 import GalleryItem from './GalleryItem';
+import { Suspense } from 'react';
 
 const Gallery = ({ w = 1.5, gap = 0.3 }: IGallery) => {
   const { projects } = useSnapshot(state);
@@ -21,16 +22,18 @@ const Gallery = ({ w = 1.5, gap = 0.3 }: IGallery) => {
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        {projects.map((project, index) => (
-          <GalleryItem
-            key={index}
-            index={index}
-            position={[index * itemSize, 0, 0]}
-            scale={[w, 4]}
-            //@ts-ignore
-            url={project.imgUrl}
-          />
-        ))}
+        <Suspense fallback={null}>
+          {projects.map((project, index) => (
+            <GalleryItem
+              key={index}
+              index={index}
+              position={[index * itemSize, 0, 0]}
+              scale={[w, 4]}
+              //@ts-ignore
+              url={project.imgUrl}
+            />
+          ))}
+        </Suspense>
       </Scroll>
     </ScrollControls>
   );

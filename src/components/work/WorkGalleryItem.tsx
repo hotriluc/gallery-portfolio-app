@@ -37,7 +37,7 @@ const WorkGalleryItem = ({
         ref.current.material.scale[1] = ref.current.scale.y = damp(
           ref.current.scale.y,
           hovered ? 7 : scale[1] + y,
-          8,
+          3,
           delta
         );
         //   ref.current.rotation.y = damp(
@@ -49,7 +49,7 @@ const WorkGalleryItem = ({
         ref.current.material.scale[0] = ref.current.scale.x = damp(
           ref.current.scale.x,
           hovered ? 7 : scale[0],
-          6,
+          3,
           delta
         );
 
