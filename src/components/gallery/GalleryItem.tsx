@@ -1,79 +1,112 @@
-import gsap from 'gsap';
-import React, { useRef } from 'react';
-import styled from 'styled-components';
+import * as THREE from 'three';
+import { state, damp } from '../../utils/utils';
 
-interface GalleryItemProps {
-  index: number;
-  imgUrl: string;
-  title: string;
-  width: number;
-  height: number;
-}
+import { useRef, useState } from 'react';
 
-const Card = styled.div`
-  /* position: relative; */
-  box-shadow: ${(props) => props.theme.color};
-  cursor: pointer;
+import { useFrame } from '@react-three/fiber';
+import { Image, useScroll } from '@react-three/drei';
 
-  img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
+import { useSnapshot } from 'valtio';
+import { useLocation } from 'wouter';
 
-  p {
-    color: white;
-    position: absolute;
-    mix-blend-mode: exclusion;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4rem;
-    width: max-content;
-    margin: 0;
-    text-transform: uppercase;
-  }
-`;
+import { IGalleryItem } from '../../interfaces/Gallery.interface';
 
-const GalleryItem = (props: GalleryItemProps) => {
-  const ref = useRef<HTMLDivElement>(null);
+const GalleryItem = ({
+  index,
+  position,
+  scale,
+  c = new THREE.Color(),
+  ...props
+}: IGalleryItem) => {
+  const ref = useRef<any>(null);
+  const scroll = useScroll();
+  const [location, navigate] = useLocation();
 
-  // scaling up animation
-  const onEnter = ({ currentTarget }: { currentTarget: HTMLDivElement }) => {
-    gsap.to(currentTarget, { scale: 1.2 });
+  const { clicked, projects } = useSnapshot(state);
+  const [hovered, setHovered] = useState(false);
+
+  const onPointerDown = () => {
+    state.clicked = index === clicked ? null : index;
+
+    setTimeout(() => {
+      navigate('/' + index);
+    }, 300);
   };
 
-  // return to default scale
-  const onLeave = ({ currentTarget }: { currentTarget: HTMLDivElement }) => {
-    gsap.to(currentTarget, { scale: 1 });
+  const onPointerLeave = () => {
+    state.clicked = null;
   };
 
-  const onMouseDown = ({
-    currentTarget,
-  }: {
-    currentTarget: HTMLDivElement;
-  }) => {
-    gsap.to(currentTarget, { scale: 1.1 });
-  };
+  useFrame((state, delta) => {
+    const y = scroll.curve(
+      index / projects.length - 1.5 / projects.length,
+      4 / projects.length
+    );
 
-  const onMouseUp = ({ currentTarget }: { currentTarget: HTMLDivElement }) => {
-    gsap.to(currentTarget, { scale: 1.2 });
-    console.log('move to project' + props.index);
-  };
+    if (ref.current) {
+      // On click animation
+      ref.current.material.scale[1] = ref.current.scale.y = damp(
+        ref.current.scale.y,
+        clicked === index ? 5 : 4 + y,
+        8,
+        delta
+      );
+      ref.current.material.scale[0] = ref.current.scale.x = damp(
+        ref.current.scale.x,
+        clicked === index ? 4.7 : scale[0],
+        6,
+        delta
+      );
+
+      // Move neighbors position depends on clicked item
+      if (clicked !== null && index < clicked)
+        ref.current.position.x = damp(
+          ref.current.position.x,
+          position[0] - 2,
+          6,
+          delta
+        );
+      if (clicked !== null && index > clicked)
+        ref.current.position.x = damp(
+          ref.current.position.x,
+          position[0] + 2,
+          6,
+          delta
+        );
+      if (clicked === null || clicked === index)
+        ref.current.position.x = damp(
+          ref.current.position.x,
+          position[0],
+          6,
+          delta
+        );
+
+      // Highlighting animation
+      ref.current.material.grayscale = damp(
+        ref.current.material.grayscale,
+        hovered || clicked === index ? 0 : Math.max(0, 1 - y),
+        6,
+        delta
+      );
+      ref.current.material.color.lerp(
+        c.set(hovered || clicked === index ? 'white' : '#aaa'),
+        hovered ? 0.3 : 0.1
+      );
+    }
+  });
 
   return (
-    <Card
+    //@ts-ignore
+    <Image
       ref={ref}
-      className={`card card-${props.index}`}
-      style={{ height: props.height, width: props.width }}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-    >
-      <img src={props.imgUrl} alt="" />
-      <p className={`card-${props.index}-title`}>{props.title}</p>
-    </Card>
+      position={position}
+      scale={[scale[0], scale[1]]}
+      {...props}
+      onPointerDown={onPointerDown}
+      onPointerLeave={onPointerLeave}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    />
   );
 };
 
