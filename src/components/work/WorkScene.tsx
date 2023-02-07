@@ -37,8 +37,6 @@ const WorkScene = ({
           width
       : 1.1;
 
-  console.log(pagesSize);
-
   useEffect(() => {
     state.clicked = null;
   }, []);

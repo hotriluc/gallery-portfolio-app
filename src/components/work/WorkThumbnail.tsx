@@ -31,6 +31,7 @@ const WorkThumbnail = ({ pagesSize, projectId }: WorkThumbnailProps) => {
 
   // Redirect to next project
   const redirectToNextProject = () => {
+    setClicked(false);
     setTimeout(() => {
       // only if y > 0.8
       if (isNext) {
