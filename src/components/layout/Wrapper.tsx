@@ -30,6 +30,7 @@ const GlobalStyle = createGlobalStyle`
 
     h1 {
       font-size: 5rem;
+      text-transform: uppercase;
     }
 `;
 
@@ -45,7 +46,7 @@ const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   };
 
   return (
-    <ThemeProvider theme={lightTheme || darkTheme}>
+    <ThemeProvider theme={darkTheme || lightTheme}>
       <GlobalStyle />
       <>{children}</>
     </ThemeProvider>

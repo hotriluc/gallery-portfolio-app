@@ -27,10 +27,7 @@ const GalleryItem = ({
 
   const onPointerDown = () => {
     state.clicked = index === clicked ? null : index;
-
-    setTimeout(() => {
-      navigate('/' + index);
-    }, 300);
+    navigate('/' + index);
   };
 
   const onPointerLeave = () => {

@@ -28,7 +28,7 @@ const Gallery = ({ w = 1.5, gap = 0.3 }: IGallery) => {
             position={[index * itemSize, 0, 0]}
             scale={[w, 4]}
             //@ts-ignore
-            url={'/image1.jpg'}
+            url={project.imgUrl}
           />
         ))}
       </Scroll>

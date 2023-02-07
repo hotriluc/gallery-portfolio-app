@@ -48,7 +48,7 @@ const WorkGalleryItem = ({
         //   );
         ref.current.material.scale[0] = ref.current.scale.x = damp(
           ref.current.scale.x,
-          hovered ? 4.7 : scale[0],
+          hovered ? 7 : scale[0],
           6,
           delta
         );
@@ -71,7 +71,6 @@ const WorkGalleryItem = ({
     //@ts-ignore
     <Image
       transparent={hovered ? false : true}
-      opacity={0.9}
       ref={ref}
       key={index}
       position={position}
