@@ -6,7 +6,7 @@ import Wrapper from './components/layout/Wrapper';
 
 import { useLocation, Switch, Route, Link, useRoute } from 'wouter';
 import WorkScene from './components/work/WorkScene';
-import { Navigation } from './styles/Global.styles';
+import { BackButton, Navigation } from './styles/Global.styles';
 import { Suspense } from 'react';
 import { Loader } from '@react-three/drei';
 
@@ -44,11 +44,15 @@ function App() {
           dataStyles={{ fontSize: '2.5rem', fontWeight: 300 }}
         />
         <>
-          {!match && (
+          {!match ? (
             <Navigation>
               <Link to="/">Works</Link>
               <Link to="about">About</Link>
             </Navigation>
+          ) : (
+            <BackButton>
+              <Link to="/">back</Link>
+            </BackButton>
           )}
         </>
       </Wrapper>

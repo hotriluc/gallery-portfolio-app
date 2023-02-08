@@ -9,7 +9,7 @@ import { ScrollControls, Scroll } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import { state } from '../../utils/utils';
 
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 
 import { IGallery } from '../../interfaces/Gallery.interface';
 

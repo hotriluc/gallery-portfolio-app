@@ -79,3 +79,18 @@ export const Navigation = styled.nav`
     transform: scale(1);
   }
 `;
+
+export const BackButton = styled.div`
+  display: inline-block;
+  position: fixed;
+  top: 5%;
+  left: 4rem;
+
+  a {
+    font-size: 2.2rem;
+    font-weight: 300;
+
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+`;
