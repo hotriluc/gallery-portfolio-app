@@ -85,6 +85,7 @@ export const BackButton = styled.div`
   position: fixed;
   top: 5%;
   left: 4rem;
+  transition: all 0.3s;
 
   a {
     font-size: 2.2rem;
@@ -92,5 +93,11 @@ export const BackButton = styled.div`
 
     text-transform: uppercase;
     color: #ffffff;
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(1);
   }
 `;

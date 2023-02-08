@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { state, damp } from '../../utils/utils';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useFrame } from '@react-three/fiber';
 import { Image, useScroll } from '@react-three/drei';
@@ -34,7 +34,7 @@ const GalleryItem = ({
     state.clicked = null;
   };
 
-  useFrame((state, delta) => {
+  useFrame((frameState, delta) => {
     const y = scroll.curve(
       index / projects.length - 1.5 / projects.length,
       4 / projects.length
