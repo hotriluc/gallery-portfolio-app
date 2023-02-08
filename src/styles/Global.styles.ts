@@ -67,7 +67,7 @@ export const Navigation = styled.nav`
   left: 45%;
 
   a {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 300;
     color: ${(props) => props.theme.color};
     transition: all 0.3s;
