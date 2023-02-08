@@ -58,3 +58,46 @@ export const Flex = styled.div<{
       height: 0;
     `};
 `;
+
+export const Navigation = styled.nav`
+  display: flex;
+  gap: 4rem;
+  position: fixed;
+  top: 5%;
+  left: 45%;
+
+  a {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: ${(props) => props.theme.color};
+    transition: all 0.3s;
+  }
+  a:hover {
+    transform: scale(1.1);
+  }
+  a:active {
+    transform: scale(1);
+  }
+`;
+
+export const BackButton = styled.div`
+  display: inline-block;
+  position: fixed;
+  top: 5%;
+  left: 4rem;
+  transition: all 0.3s;
+
+  a {
+    font-size: 2.2rem;
+    font-weight: 300;
+
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(1);
+  }
+`;

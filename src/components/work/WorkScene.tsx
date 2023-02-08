@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { Container, Flex } from '../../styles/Global.styles';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
@@ -9,7 +9,7 @@ import { ScrollControls, Scroll } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import { state } from '../../utils/utils';
 
-import { useRoute } from 'wouter';
+import { Link, useRoute } from 'wouter';
 
 import { IGallery } from '../../interfaces/Gallery.interface';
 
@@ -20,7 +20,7 @@ const WorkScene = ({
   gap: galleryGap = 0.8,
   w: galleryItemWidth = 3,
 }: IGallery) => {
-  const [match, params] = useRoute('/:id');
+  const [match, params] = useRoute('/works/:id');
   //@ts-ignore
   const { id: projectId } = params;
 
@@ -36,10 +36,6 @@ const WorkScene = ({
         (width - itemTotalWidth + project.images?.length * itemTotalWidth) /
           width
       : 1.1;
-
-  useEffect(() => {
-    state.clicked = null;
-  }, []);
 
   return (
     <ScrollControls
