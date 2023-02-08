@@ -40,7 +40,7 @@ const WorkThumbnail = ({
     setTimeout(() => {
       // only if y > 0.8
       if (isNext) {
-        navigate(`/${projectId + 1}`);
+        navigate(`/works/${projectId + 1}`);
       }
     }, 300);
   };

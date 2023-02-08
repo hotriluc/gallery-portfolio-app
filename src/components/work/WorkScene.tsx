@@ -20,7 +20,7 @@ const WorkScene = ({
   gap: galleryGap = 0.8,
   w: galleryItemWidth = 3,
 }: IGallery) => {
-  const [match, params] = useRoute('/:id');
+  const [match, params] = useRoute('/works/:id');
   //@ts-ignore
   const { id: projectId } = params;
 

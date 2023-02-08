@@ -70,5 +70,12 @@ export const Navigation = styled.nav`
     font-size: 2.5rem;
     font-weight: 300;
     color: ${(props) => props.theme.color};
+    transition: all 0.3s;
+  }
+  a:hover {
+    transform: scale(1.1);
+  }
+  a:active {
+    transform: scale(1);
   }
 `;

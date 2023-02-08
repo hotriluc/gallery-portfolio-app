@@ -22,18 +22,16 @@ const Gallery = ({ w = 1.5, gap = 0.3 }: IGallery) => {
       style={{ overflow: 'hidden hidden' }}
     >
       <Scroll>
-        <Suspense fallback={null}>
-          {projects.map((project, index) => (
-            <GalleryItem
-              key={index}
-              index={index}
-              position={[index * itemSize, 0, 0]}
-              scale={[w, 4]}
-              //@ts-ignore
-              url={project.imgUrl}
-            />
-          ))}
-        </Suspense>
+        {projects.map((project, index) => (
+          <GalleryItem
+            key={index}
+            index={index}
+            position={[index * itemSize, 0, 0]}
+            scale={[w, 4]}
+            //@ts-ignore
+            url={project.imgUrl}
+          />
+        ))}
       </Scroll>
     </ScrollControls>
   );
