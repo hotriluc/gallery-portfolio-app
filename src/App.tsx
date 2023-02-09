@@ -9,10 +9,11 @@ import WorkScene from './components/work/WorkScene';
 import { BackButton, Navigation } from './styles/Global.styles';
 import { Suspense } from 'react';
 import { Loader } from '@react-three/drei';
+import ActiveLink from './components/ActiveLink';
 
 function App() {
   const [location] = useLocation();
-  const [match, params] = useRoute('/works/:id');
+  const [match] = useRoute('/works/:id');
 
   return (
     <>
@@ -46,8 +47,8 @@ function App() {
         <>
           {!match ? (
             <Navigation>
-              <Link to="/">Works</Link>
-              <Link to="about">About</Link>
+              <ActiveLink href="/">Works</ActiveLink>
+              <ActiveLink href="/about">About</ActiveLink>
             </Navigation>
           ) : (
             <BackButton>

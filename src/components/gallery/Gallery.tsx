@@ -7,7 +7,6 @@ import { useSnapshot } from 'valtio';
 import { IGallery } from '../../interfaces/Gallery.interface';
 
 import GalleryItem from './GalleryItem';
-import { Suspense } from 'react';
 
 const Gallery = ({ w = 1.5, gap = 0.3 }: IGallery) => {
   const { projects } = useSnapshot(state);

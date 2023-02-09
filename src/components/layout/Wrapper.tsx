@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Montserrat', sans-serif;
         background:  ${(props) => props.theme.background} ;
         color:  ${(props: any) => props.theme.color};
-        overflow-x: hidden;
+        /* overflow-x: hidden; */
     }
     
     html, body, #root, main {
@@ -31,6 +31,10 @@ const GlobalStyle = createGlobalStyle`
     h1 {
       font-size: 5rem;
       text-transform: uppercase;
+    }
+
+    .active {
+      color: #ffff !important;
     }
 `;
 

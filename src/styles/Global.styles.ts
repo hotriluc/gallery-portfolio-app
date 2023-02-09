@@ -69,10 +69,12 @@ export const Navigation = styled.nav`
   a {
     font-size: 2.2rem;
     font-weight: 300;
-    color: ${(props) => props.theme.color};
+    color: #bebebe;
+    /* color: ${(props) => props.theme.color}; */
     transition: all 0.3s;
   }
   a:hover {
+    color: ${(props) => props.theme.color};
     transform: scale(1.1);
   }
   a:active {
@@ -92,7 +94,7 @@ export const BackButton = styled.div`
     font-weight: 300;
 
     text-transform: uppercase;
-    color: #ffffff;
+    color: ${(props) => props.theme.color};
   }
   &:hover {
     transform: scale(1.1);
