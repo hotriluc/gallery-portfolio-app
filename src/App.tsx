@@ -1,13 +1,63 @@
+import { Canvas } from '@react-three/fiber';
+import About from './components/about/About';
+
+import Gallery from './components/gallery/Gallery';
 import Wrapper from './components/layout/Wrapper';
-import { useLenis } from './hooks/useLenis';
+
+import { useLocation, Switch, Route, Link, useRoute } from 'wouter';
+import WorkScene from './components/work/WorkScene';
+import { BackButton, Navigation } from './styles/Global.styles';
+import { Suspense } from 'react';
+import { Loader } from '@react-three/drei';
+import ActiveLink from './components/ActiveLink';
 
 function App() {
-  useLenis();
+  const [location] = useLocation();
+  const [match] = useRoute('/works/:id');
 
   return (
-    <Wrapper>
-      <div>something</div>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
+          <Switch location={location}>
+            <Route path="/">
+              <Suspense fallback={null}>
+                <Gallery />
+              </Suspense>
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+            <Route path="/works/:id">
+              <Suspense fallback={null}>
+                <WorkScene />
+              </Suspense>
+            </Route>
+          </Switch>
+        </Canvas>
+        <Loader
+          containerStyles={{
+            justifyContent: 'center',
+            backgroundColor: '#101010',
+          }}
+          innerStyles={{ width: '85vw', height: 7 }}
+          barStyles={{ width: '85vw', height: 10, transformOrigin: 'center' }}
+          dataStyles={{ fontSize: '2.5rem', fontWeight: 300 }}
+        />
+        <>
+          {!match ? (
+            <Navigation>
+              <ActiveLink href="/">Works</ActiveLink>
+              <ActiveLink href="/about">About</ActiveLink>
+            </Navigation>
+          ) : (
+            <BackButton>
+              <Link to="/">back</Link>
+            </BackButton>
+          )}
+        </>
+      </Wrapper>
+    </>
   );
 }
 

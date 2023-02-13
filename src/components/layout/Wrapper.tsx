@@ -15,16 +15,26 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        background: ${(props: any) => props.theme.background};
+        font-family: 'Montserrat', sans-serif;
+        background:  ${(props) => props.theme.background} ;
         color:  ${(props: any) => props.theme.color};
-        overscroll-behavior: none;
-        overflow-x: hidden;
+        /* overflow-x: hidden; */
     }
     
-    html, body {
-        min-height: 100%;
-        height: auto;
+    html, body, #root, main {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 5rem;
+      text-transform: uppercase;
+    }
+
+    .active {
+      color: #ffff !important;
     }
 `;
 
@@ -40,9 +50,9 @@ const Wrapper = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   };
 
   return (
-    <ThemeProvider theme={lightTheme || darkTheme}>
+    <ThemeProvider theme={darkTheme || lightTheme}>
       <GlobalStyle />
-      <main>{children}</main>
+      <>{children}</>
     </ThemeProvider>
   );
 };
