@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { state, damp } from '../../utils/utils';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { useFrame } from '@react-three/fiber';
 import { Image, useScroll } from '@react-three/drei';

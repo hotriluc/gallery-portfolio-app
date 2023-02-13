@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { Container, Flex } from '../../styles/Global.styles';
 import { WorkDescription, WorkHeading } from '../../styles/Work.styles';
 
@@ -9,7 +7,7 @@ import { ScrollControls, Scroll } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import { state } from '../../utils/utils';
 
-import { Link, useRoute } from 'wouter';
+import { useRoute } from 'wouter';
 
 import { IGallery } from '../../interfaces/Gallery.interface';
 
